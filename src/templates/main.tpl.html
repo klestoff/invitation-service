@@ -1,0 +1,227 @@
+<?='<?xml version="1.0" encoding="UTF-8"?>';?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Приглашение на свадьбу Клестова и Устюговой<?=$guest ? ': '.$guest->getDisplayName() : null?></title>
+		<link type="text/css" rel="stylesheet" href="/i/wedding.css" media="screen" />
+
+<?php
+	if (!$guest->isAnonyous() || $guest->isSecretKey()) {
+?>
+		<script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+		<script type="text/javascript" src="/i/jquery.js" charset="UTF-8"></script>
+		<script type="text/javascript" src="/i/jquery.notify.js" charset="UTF-8"></script>
+		<script type="text/javascript">
+			<!--
+			$(document).ready(function(){
+<?php
+	if ($guest->isSecretKey()) {
+?>
+				$('button').hover(
+					function() { $(this).addClass('button-highlight'); },
+					function() { $(this).removeClass('button-highlight'); }
+				);
+						
+				$('.buttons button').click(function() {
+					if ($(this).hasClass('button-highlighted'))
+						$.notify.add(
+							$(this).val(), 
+							'neutral-message', 
+							5
+						);
+					else
+						$.post(
+							'/<?=$guest->getSecretKey()?>/',
+							{ action: $(this).attr('id') },
+							function (data) {
+								if (data.success && data.action) {
+									$('button').removeClass('button-highlighted');
+									$('#' + data.action).addClass('button-highlighted');
+									
+									$.notify.add(
+										$('#' + data.action).val(), 
+										'success-message', 
+										5
+									);
+								} else 
+									$.notify.add(
+										'Не удалось сохранить ваш ответ. '
+										+ 'Пожалуйста, попробуйте позднее.', 
+										'warning-message', 
+										5
+									);
+							},
+							'json'
+						);
+				});
+				
+				$('.comment').click(function(){
+					$($(this).attr('href')).toggle('fast');
+					return false;
+				});
+				
+				$('.send-comment').click(function(){
+					$.post(
+						'/<?=$guest->getSecretKey()?>/',
+						{ 
+							action: 'comment',
+							text: $('#commentField').val()
+						},
+						function (data) {
+							if (data.success) {
+								$.notify.add(
+									'Комментарий добавлен', 
+									'success-message', 
+									5
+								);
+								$('#commentField').val('');
+								$('#comment').hide();
+							} else {
+								$.notify.add(
+									'Не удалось добавить комментарий. '
+									+ 'Пожалуйста, попробуйте позднее.',
+									'warning-message', 
+									5
+								);
+							}
+						},
+						'json'
+					);
+				});
+				
+				$('#optionalResult').click(function() {
+					$.post(
+						'/<?=$guest->getSecretKey()?>/',
+						{ 
+							action: 'optional',
+							value: $(this).attr('checked') ? 1 : 0
+						},
+						function (data) {
+							var text = $('#optionalResultText').html();
+							
+							if (data.success) {
+								$.notify.add(
+									'Выбор для «' + text + '» сохранен',
+									'success-message', 
+									5
+								);
+							} else {
+								$.notify.add(
+									'Не удалось сохранить выбор для "' 
+									+ text + '". Пожалуйста, попробуйте позднее.',
+									'warning-message', 
+									5
+								);
+							}
+						},
+						'json'
+					);
+				});
+<?php
+	}
+?>
+				$('.header').css('background-image', 'url(/i/names/<?=$guest->getFileName();?>.png)');
+			});
+			//-->
+		</script>
+<?php
+	}
+?>
+    </head>
+    <body>
+		<div class="card">
+			<div class="header"></div>
+			<div class="content">
+				<div class="share">
+<?php
+	if ($guest->isSecretKey()) {
+?>
+					<div class="yashare-auto-init" 
+						 data-yashareL10n="ru" 
+						 data-yashareType="none" 
+						 data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir"
+						 data-yashareLink="<?=PATH_WEB.$guest->getOpenKey()?>"
+						 data-yashareTitle="Меня пригласили на свадьбу"
+						 data-yashareDescription="12 августа состоится свадьба Клестова и Устюговой"
+						 data-yashareImage="/i/couple.jpg">
+					</div> 
+
+					<div class="tiny">
+						* Если <?=$guest->getQuantity()->getPlans()?> поделиться с друзьями — вот ссылка:
+						<a href="<?=PATH_WEB.$guest->getOpenKey()?>"><?=PATH_WEB.$guest->getOpenKey()?></a>
+					</div>
+<?php
+	}
+?>
+				</div>
+				<div class="invite">
+					<div class="bold">
+<?php
+	if ($guest->isAnonyous()) {
+?>
+						12 августа у нас будет свадьба.
+<?
+	} else {
+?>
+						12 августа ничего не <?=$guest->getQuantity()->getPlans()?>?
+						Тогда идем отмечать нашу свадьбу.
+						Регистрация в 16:40<br />во Дворце Бракосочетания,
+						а потом — веселье.
+<?php
+	}
+?>
+					</div>
+					<div class="sign bold">Клестов и Устюгова</div>
+					
+					<div class="buttons">
+<?php
+	if ($guest->isSecretKey()) {
+?>
+						<button
+							id="accept"
+							title="Принять приглашение"
+							value="Приглашение принято"
+							class="button<?=$guest->getResult()->getId() == Result::AGREE_ID ? ' button-highlighted' : null?>"
+						>
+							<?=$guest->getQuantity()->getWillGo()?>
+						</button>
+<?php
+		if ($guest->getOptionalText()) {
+?>
+						<input 
+							type="checkbox"
+							id="optionalResult"
+							name="optionalResult"
+							<?=$guest->getOptionalResult()->getId() == Result::AGREE_ID ? 'checked="checked"' : null?> />
+
+						<label for="optionalResult" id="optionalResultText"><?=$guest->getOptionalText()?></label>
+<?php
+		}
+?>
+						<br />
+						<button
+							id="decline"
+							title="Отклонить приглашение"
+							value="Приглашение отклонено"
+							class="button<?=$guest->getResult()->getId() == Result::DISAGREE_ID ? ' button-highlighted' : null?>"
+						>
+							<?=$guest->getQuantity()->getStayHome()?>
+						</button>
+					</div>
+					<div>
+						<a href="#comment" class="comment">Добавить комментарий</a>
+						<div id="comment">
+							<textarea name="comment" id="commentField"></textarea>
+							<button class="button send-comment">Отправить</button>
+						</div>
+					</div>
+<?php
+	}
+?>
+				</div>	
+			</div>
+		</div>
+    </body>
+</html>
+

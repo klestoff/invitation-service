@@ -1,0 +1,61 @@
+root { display: block; }
+body { background: #f6f6f6; margin: 0px; padding: 0px; color: #859698; font:normal 16pt Calibri,"DejaVu Sans",Verdana,Arial,sans-serif}
+
+.card {
+	border: 1px solid #eee;
+	width: 800px;
+	height: 600px;
+	position: absolute;
+	top: 50%;
+	left:50%;
+	margin:-300px 0px 0px -400px;
+	background:white url(/i/flowers.jpg) no-repeat scroll right bottom;
+}
+
+.header {
+	height:130px;
+	background: transparent url(/i/names/no_guest.png) no-repeat scroll center bottom;
+	margin-bottom: 30px;
+}
+
+.content {overflow:hidden;clear:both;}
+.content > div {margin:0px 30px}
+.content .share {width:200px;float:left;background:transparent url(/i/couple.jpg) no-repeat scroll top left;padding-top:300px;height:140px;}
+.content .invite {width:480px;float:right;}
+
+.sign {margin:16px 0px;text-align:right;}
+
+a.comment {color:#859698;font-size:0.8em}
+a.comment:hover {color:#607173}
+
+.buttons {margin:16px 0px;}
+
+button, label {font:normal 12pt Calibri,Arial,Verdana,sans-serif}
+
+.button {
+	border: 0px none;
+	background: transparent url(/i/button_grey.png) no-repeat scroll left top;
+	color: white;
+	width: 121px;
+	height: 36px;
+	line-height: 34px;
+	text-align: center;
+}
+
+.button-highlight, .button-highlighted {background-image: url(/i/button_pink.png);}
+
+.tiny {	font-size: 0.5em; }
+
+.tiny a {color:#607173;}
+.tiny a:hover {text-decoration:none;}
+textarea {width:100%;height:100px;border:1px solid #859698} 
+
+#comment {display:none;}
+
+#boxs {width:300px;}
+#boxs div {padding:8px;border-radius:8px 2px;margin:2px 0px;color:white;font-weight:bold}
+.warning-message {background:#e8a4d2;border:1px solid #aa0000}
+.success-message {background:#8de856;border:1px solid #336633}
+.neutral-message {background:#999;border:1px solid #336633}
+
+.bold {font-weight:bold}

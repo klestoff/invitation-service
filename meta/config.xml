@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE metaconfiguration SYSTEM "meta.dtd">
+
+<metaconfiguration>
+	<classes>
+		<class name="Result" type="final">
+			<properties>
+				<identifier type="SmallInteger"/>
+				<property name="name" type="String" size="10" required="true" />
+			</properties>
+			<pattern name="EnumerationClass" />
+		</class>
+
+		<class name="Quantity" type="final">
+			<properties>
+				<identifier type="SmallInteger"/>
+				<property name="name" type="String" size="10" required="true" />
+			</properties>
+			<pattern name="EnumerationClass" />
+		</class>
+		
+		<class name="Guest" type="final">
+			<properties>
+				<identifier type="Integer"/>
+
+				<property name="name" type="String" size="255" required="true" />
+				<property name="displayName" type="String" size="255" required="true" />
+				<property name="fileName" type="String" size="255" required="true" />
+				<property name="result" type="Result" relation="OneToOne" required="true" />
+				<property name="quantity" type="Quantity" relation="OneToOne" required="true" />
+				<property name="secretKey" type="String" size="40" required="true" />
+				<property name="openKey" type="String" size="40" required="true" />
+				<property name="optionalText" type="String" size="100" />
+				<property name="optionalResult" type="Result" relation="OneToOne" required="true" />
+				<property name="comment" type="String" />
+
+			</properties>
+			<pattern name="DictionaryClass" />
+		</class>
+	</classes>
+
+	<sources>
+		<source name="invitation" default="true"/>
+	</sources>
+</metaconfiguration>

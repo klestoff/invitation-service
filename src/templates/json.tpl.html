@@ -1,0 +1,7 @@
+<?php
+	$result = empty($result) ? array() : $result;
+	
+	$result = array_merge($result, array('action' => $action));
+	
+	echo json_encode($result);
+?>
